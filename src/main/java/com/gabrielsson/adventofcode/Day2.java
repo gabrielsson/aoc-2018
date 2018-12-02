@@ -51,14 +51,14 @@ public class Day2 {
 
 
     //part2
-    public static String part2(List<String> input) {
-        return input.stream()
-                .map(current -> extractElement(input, current))
+    public static String part2(List<String> rows) {
+        return rows.stream()
+                .map(row -> getAlmostMatchingRow(rows, row))
                 .flatMap(Stream::distinct)
                 .findFirst().get();
     }
 
-    private static Stream<String> extractElement(List<String> input, String current) {
+    private static Stream<String> getAlmostMatchingRow(List<String> input, String current) {
         return input.stream()
                 .filter(compared -> !current.equals(compared))
                 .map(compared -> match(current, compared))
@@ -68,7 +68,7 @@ public class Day2 {
     private static String match(String current, String compared) {
         AtomicReference<String> match = new AtomicReference<>();
 
-        IntStream.range(0, compared.length()).parallel().forEach(i -> {
+        IntStream.range(0, compared.length()).forEach(i -> {
             String currentReduced = current.substring(0, i) + current.substring(i + 1);
             String comparedReduced = compared.substring(0, i) + compared.substring(i + 1);
             if (currentReduced.equals(comparedReduced)) {
