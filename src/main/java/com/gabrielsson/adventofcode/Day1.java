@@ -1,24 +1,13 @@
 package com.gabrielsson.adventofcode;
 
-import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Day1 {
 
 
     public static Object puzzle(List<Integer> input) {
-
-        int sum = 0;
-
-        for(int i: input) {
-            sum += i;
-        }
-
-
-        return sum;
+        return input.stream().reduce(0, Integer::sum);
     }
 
 
@@ -36,7 +25,6 @@ public class Day1 {
                     return freqChange;
                 } else {
                     freqs.add(freqChange);
-
                 }
                 current = freqChange;
             }

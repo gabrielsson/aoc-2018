@@ -33,7 +33,7 @@ public class Day1Test {
 
         List<Integer> inputs = Arrays.asList(+3, +3, +4, -2, -4);
 
-        System.out.println(d.puzzle2(inputs));
+        //System.out.println(d.puzzle2(inputs));
     }
 
 
@@ -45,7 +45,7 @@ public class Day1Test {
         List<Integer> inputs = Arrays.asList(  +7, +7, -2, -7, -4
         );
 
-        System.out.println(d.puzzle2(inputs));
+        //System.out.println(d.puzzle2(inputs));
     }
 
 
