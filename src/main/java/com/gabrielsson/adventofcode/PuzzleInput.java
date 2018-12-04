@@ -63,8 +63,8 @@ public class PuzzleInput {
     public List<String> getListOfRows() {
         List<String> rows = new ArrayList<>();
         Scanner scanner = getInputScanner();
-        while (scanner.hasNext()) {
-            rows.add(scanner.next());
+        while (scanner.hasNextLine()) {
+            rows.add(scanner.nextLine());
         }
 
         return rows;
