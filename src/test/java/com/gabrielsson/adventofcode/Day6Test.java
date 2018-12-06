@@ -30,7 +30,7 @@ public class Day6Test {
 
         PuzzleInput input = new PuzzleInput("day6example.txt");
 
-        Assert.assertEquals("", Day6.part1(input.getListOfRows()));
+        Assert.assertEquals(17, Day6.part1(input.getListOfRows()));
 
         System.out.println(Day6.part1(input.getListOfRows()) + "");
     }
