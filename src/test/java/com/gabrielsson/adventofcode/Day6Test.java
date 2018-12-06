@@ -12,17 +12,17 @@ public class Day6Test {
     public void part1() {
         PuzzleInput input = new PuzzleInput("day6.txt");
 
-        Assert.assertEquals("", Day6.part1(input.getListOfRows()));
+        Assert.assertEquals(3722, Day6.part1(input.getListOfRows()));
 
-        System.out.println(Day6.part1(input.getListOfRows()) + "");
+
     }
     @Test
     public void part2() {
         PuzzleInput input = new PuzzleInput("day6.txt");
 
-        Assert.assertEquals("", Day6.part2(input.getListOfRows()));
+        Assert.assertEquals(44634, Day6.part2(input.getListOfRows(), 100000));
 
-        System.out.println(Day6.part1(input.getListOfRows()) + "");
+
     }
 
     @Test
@@ -32,7 +32,6 @@ public class Day6Test {
 
         Assert.assertEquals(17, Day6.part1(input.getListOfRows()));
 
-        System.out.println(Day6.part1(input.getListOfRows()) + "");
     }
 
 
@@ -41,10 +40,11 @@ public class Day6Test {
 
         PuzzleInput input = new PuzzleInput("day6example.txt");
 
-        Assert.assertEquals("", Day6.part2(input.getListOfRows()));
+        Assert.assertEquals(16, Day6.part2(input.getListOfRows(), 32));
 
-        System.out.println(Day6.part2(input.getListOfRows()) + "");
+
     }
+
 
 
 }

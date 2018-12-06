@@ -1,93 +1,135 @@
 package com.gabrielsson.adventofcode;
 
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Day6 {
 
     public static Object part1(List<String> rows) {
 
-        //highest x,y
+        //highest maxx,maxy
 
-        int x = rows.stream().mapToInt(s -> Integer.valueOf(s.split(",")[0].trim())).max().getAsInt();
-        int y = rows.stream().mapToInt(s -> Integer.valueOf(s.split(",")[1].trim())).max().getAsInt();
+        int maxx = rows.stream().mapToInt(s -> Integer.valueOf(s.split(",")[0].trim())).max().getAsInt();
+        int maxy = rows.stream().mapToInt(s -> Integer.valueOf(s.split(",")[1].trim())).max().getAsInt();
 
-        List<Coordintate> areaCenters = new ArrayList<>();
+        List<OriginPoint> areaCenters = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
-            areaCenters.add(new Coordintate(i, rows.get(i)));
+            areaCenters.add(new OriginPoint(i + "", rows.get(i)));
         }
 
 
-        CountMap<Coordintate> countMap = new CountMap<>();
-        for (Coordintate coordinate : areaCenters) {
-            for (int i = 0; i < x; i++) {
-                for (int j = 0; j < y; j++) {
+        List<List<Score>> grid = new ArrayList<>();
 
-                    Integer score = countMap.get(new Coordintate(0, i, j));
-                    int manhattansDistance = getManhattanDistance(coordinate, i, j);
-                    if (score == null || manhattansDistance < score) {
-                        countMap.put(new Coordintate(coordinate.owner, i, j), getManhattanDistance(coordinate, i, j));
+
+        for (int i = 0; i < maxx; i++) {
+            ArrayList<Score> ys = new ArrayList<>();
+            for (int j = 0; j < maxy; j++) {
+                ys.add(j, new Score("-", Integer.MAX_VALUE));
+            }
+            grid.add(i, ys);
+        }
+
+        for (OriginPoint point : areaCenters) {
+            for (int x = 0; x < maxx; x++) {
+
+                for (int y = 0; y < maxy; y++) {
+                    Score pointScore = grid.get(x).get(y);
+                    int manhattanDistance = getManhattanDistance(point.p.x,point.p.y, x, y);
+                    if (pointScore.score > manhattanDistance) {
+                        grid.get(x).set(y, new Score(point.owner, manhattanDistance));
+                    } else if (pointScore.score == manhattanDistance) {
+                        grid.get(x).set(y, new Score(".", manhattanDistance));
                     }
-
                 }
+
             }
         }
 
-        //filter away the areas with side conneted
-        int sum = 0;
-        for (Coordintate a : areaCenters) {
-            int localsum = countMap.entrySet().stream().filter(e -> e.getKey().owner == a.owner).mapToInt(e -> e.getValue()).sum();
 
+        CountMap<String> countMap = new CountMap<>();
+        Set<String> removeIds = new HashSet<>();
+        for (int x = 0; x < maxx; x++) {
+
+            for (int y = 0; y < maxy; y++) {
+                if (x == 0 || x == maxx || y == 0 || y == maxy) {
+                    removeIds.add(grid.get(x).get(y).id);
+                }
+                countMap.increment(grid.get(x).get(y).id);
+            }
+        }
+
+        for (String id : removeIds) {
+            countMap.remove(id);
+        }
+
+        String key = countMap.getMaxKey();
+        return countMap.get(key);
+    }
+
+    public static Integer getManhattanDistance(int ox, int oy, int x, int y) {
+        int distance = 0;
+        distance += Math.abs(ox - x);
+        distance += Math.abs(oy - y);
+        return distance;
+    }
+
+    public static Object part2(List<String> rows, int limit) {
+
+        int maxx = rows.stream().mapToInt(s -> Integer.valueOf(s.split(",")[0].trim())).max().getAsInt();
+        int maxy = rows.stream().mapToInt(s -> Integer.valueOf(s.split(",")[1].trim())).max().getAsInt();
+        List<OriginPoint> areaCenters = new ArrayList<>();
+        for (int i = 0; i < rows.size(); i++) {
+            areaCenters.add(new OriginPoint(i + "", rows.get(i)));
+        }
+
+        int biggestArea = 0;
+
+        for (int x = 0; x < maxx; x++) {
+
+            for (int y = 0; y < maxy; y++) {
+
+                int manhattanDistance = 0;
+
+                for (OriginPoint point : areaCenters) {
+                    manhattanDistance += getManhattanDistance(x, y, point.p.x, point.p.y);
+                }
+                if(manhattanDistance < limit) {
+                    biggestArea++;
+                }
+            }
 
 
         }
 
 
-    ;
-
-
-        return"";
-}
-
-    private static Integer getManhattanDistance(Coordintate coordinate, int x, int y) {
-        int distance = 0;
-        distance += Math.abs(coordinate.x - x);
-        distance += Math.abs(coordinate.y - y);
-        return distance;
+        return biggestArea;
     }
 
-    public static Object part2(List<String> rows) {
+    static class Score {
+        String id = ".";
+        int score = 0;
 
-
-        return "";
+        public Score(String owner, int manhattanDistance) {
+            score = manhattanDistance;
+            id = owner;
+        }
     }
 
+    static class OriginPoint {
+        Point p;
+        String owner;
 
-static class Coordintate {
-    int x;
-    int y;
-    int owner;
+        public OriginPoint(String id, String row) {
+            p = new Point(Integer.valueOf(row.split(",")[0].trim()), Integer.valueOf(row.split(",")[1].trim()));
+            owner = id;
+        }
 
-    public Coordintate(int id, String row) {
-        x = Integer.valueOf(row.split(",")[0].trim());
-        y = Integer.valueOf(row.split(",")[0].trim());
-        owner = id;
+        public OriginPoint(String id, int x, int y) {
+            p = new Point(x, y);
+            owner = id;
+        }
+
     }
-
-    public Coordintate(int id, int x, int y) {
-        this.x = x;
-        this.y = y;
-        owner = id;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Coordintate that = (Coordintate) o;
-        return x == that.x &&
-                y == that.y;
-    }
-}
 }
