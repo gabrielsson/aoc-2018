@@ -27,7 +27,7 @@ public class Day8 {
         node.numberOfChildNodes = this.rows.get(index++);
         node.numberOfMetaEntries = this.rows.get(index++);
 
-        for (int i = 0; i < node.numberOfChildNodes && index < rows.size() - 2; i++) {
+        for (int i = 0; i < node.numberOfChildNodes; i++) {
             Node child = getChildNode();
             node.children.add(child);
             node.metaSum += child.metaSum;
@@ -50,16 +50,17 @@ public class Day8 {
 
         public int getMetaSum() {
             if (numberOfChildNodes > 0) {
-                int sum = 0;
-                for(int metaIndex : metaentries) {
-                    if(metaIndex - 1 < children.size()) {
-                        sum += children.get(metaIndex - 1).getMetaSum();
-                    }
-                }
-                return sum;
+                return metaentries.stream()
+                        .filter(metaIndex -> metaIndex - 1 < children.size())
+                        .mapToInt(metaIndex -> children.get(metaIndex - 1).getMetaSum())
+                        .sum();
+
+
+
             } else {
-                int score = this.metaentries.stream().mapToInt(Integer::new).sum();
-                return score;
+                return metaentries.stream()
+                        .mapToInt(Integer::new)
+                        .sum();
             }
         }
     }
