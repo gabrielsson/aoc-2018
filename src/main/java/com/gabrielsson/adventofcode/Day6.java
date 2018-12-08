@@ -31,21 +31,8 @@ public class Day6 {
             grid.add(i, ys);
         }
 
-<<<<<<< HEAD
         for (OriginPoint point : areaCenters) {
             for (int x = 0; x < maxx; x++) {
-=======
-        //filter away the areas with side conneted
-        List<Integer> idsWithInfite = countMap.entrySet().stream().filter(e -> e.getKey().x == x || e.getKey().y == y).map(e -> e.getKey().owner).collect(Collectors.toList());
-
-
-        for(Integer id : idsWithInfite) {
-            areaCenters.remove(id);
-        }
-        for (Coordintate a : areaCenters) {
-            int localsum = countMap.entrySet().stream().filter(e -> e.getKey().owner == a.owner).mapToInt(e -> e.getValue()).sum();
-
->>>>>>> Day7
 
                 for (int y = 0; y < maxy; y++) {
                     Score pointScore = grid.get(x).get(y);
@@ -57,11 +44,7 @@ public class Day6 {
                     }
                 }
 
-<<<<<<< HEAD
             }
-=======
-
->>>>>>> Day7
         }
 
 
