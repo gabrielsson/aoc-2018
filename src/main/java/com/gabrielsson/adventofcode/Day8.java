@@ -36,6 +36,7 @@ public class Day8 {
         List<Integer> metaEntries = new ArrayList<>();
         List<Node> children = new ArrayList<>();
 
+
         public int getSumPart1() {
             return children.stream()
                     .mapToInt(Node::getSumPart1)

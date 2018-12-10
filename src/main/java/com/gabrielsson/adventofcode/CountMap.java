@@ -5,26 +5,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class CountMap<K> extends HashMap<K, Integer> {
+public class CountMap<K> extends HashMap<K, Long> {
 
-    public int increment(K key, int invVal) {
-        int value = getOrDefault(key, 0);
-        int newValue = value + invVal;
+    public long increment(K key, long invVal) {
+        long value = getOrDefault(key, 0l);
+        long newValue = value + invVal;
         put(key, newValue);
         return newValue;
     }
-    public int increment(K key) {
+    public long increment(K key) {
         return increment(key, 1);
     }
 
-    public int decrement(K key) {
+    public long decrement(K key) {
         return increment(key, -1);
     }
 
     public K getMaxKey() {
-        int max = 0;
+        long max = 0;
         K maxKey = null;
-        for (Map.Entry<K, Integer> entry : entrySet()) {
+        for (Map.Entry<K, Long> entry : entrySet()) {
             if (entry.getValue() > max) {
                 max = entry.getValue();
                 maxKey = entry.getKey();
@@ -34,9 +34,9 @@ public class CountMap<K> extends HashMap<K, Integer> {
     }
 
     public K getMinKey() {
-        int min = Integer.MAX_VALUE;
+        long min = Long.MAX_VALUE;
         K minKey = null;
-        for (Map.Entry<K, Integer> entry : entrySet()) {
+        for (Map.Entry<K, Long> entry : entrySet()) {
             if (entry.getValue() < min) {
                 min = entry.getValue();
                 minKey = entry.getKey();
@@ -45,9 +45,9 @@ public class CountMap<K> extends HashMap<K, Integer> {
         return minKey;
     }
 
-    public Set<K> getKeysAboveOrEquals(int limit) {
+    public Set<K> getKeysAboveOrEquals(long limit) {
         Set<K> set = new HashSet<>();
-        for (Map.Entry<K, Integer> entry : entrySet()) {
+        for (Map.Entry<K, Long> entry : entrySet()) {
             if (entry.getValue() >= limit) {
                 set.add(entry.getKey());
             }
@@ -57,7 +57,7 @@ public class CountMap<K> extends HashMap<K, Integer> {
 
     public Set<K> getKeysEqual(int value) {
         Set<K> set = new HashSet<>();
-        for (Map.Entry<K, Integer> entry : entrySet()) {
+        for (Map.Entry<K, Long> entry : entrySet()) {
             if (entry.getValue() == value) {
                 set.add(entry.getKey());
             }

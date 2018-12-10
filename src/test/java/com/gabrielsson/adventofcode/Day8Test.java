@@ -13,8 +13,7 @@ public class Day8Test {
         PuzzleInput input = new PuzzleInput("day8.txt");
 
         Day8 d = new Day8();
-        Assert.assertEquals(3722, d.part1(input.getListOfIntegers()));
-//1 2 1 6 9 1 9 1 1 2 1 2 1 1 2 3
+        Assert.assertEquals(42768, d.part1(input.getListOfIntegers()));
 
     }
     @Test
@@ -22,7 +21,7 @@ public class Day8Test {
         PuzzleInput input = new PuzzleInput("day8.txt");
 
         Day8 d = new Day8();
-        Assert.assertEquals(3722, d.part2(input.getListOfIntegers()));
+        Assert.assertEquals(34348, d.part2(input.getListOfIntegers()));
 
     }
 
