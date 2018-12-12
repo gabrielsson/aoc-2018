@@ -19,7 +19,7 @@ public class Day12Test {
         PuzzleInput input = new PuzzleInput("day12.txt");
 
         Day12 d = new Day12();
-        Assert.assertEquals(325, d.part1(input.getListOfRows(), "##..#..##....#..#..#..##.#.###.######..#..###.#.#..##.###.#.##..###..#.#..#.##.##..###.#.#...#.##.."));
+        Assert.assertEquals(3793, d.part1(input.getListOfRows(), "##..#..##....#..#..#..##.#.###.######..#..###.#.#..##.###.#.##..###..#.#..#.##.##..###.#.#...#.##.."));
 
     }
 }

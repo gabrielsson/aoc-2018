@@ -7,59 +7,62 @@ public class Day12 {
 
     public Object part1(List<String> rules, String state) {
 
-        String[] s = ("...................."+state + "........................................................................................................................").split("\\B");
 
         //Adding 20 .....
 
-        String[] next = s.clone();
-
-        for (int x = 0; x < 20; x++) {
-            s = next.clone();
-
-            for (int i = 0; i < s.length; i++) {
+        StringBuffer next = new StringBuffer(state);
+        int x = 0;
+        boolean converging = false;
+        for (; x < 20; x++) {
+            state = next.toString();
+            next = new StringBuffer();
+            for (int i = -1; i < state.length() + 1; i++) {
                 boolean match = false;
-                String nextChar ="";
+                String nextChar = "";
                 for (String rule : rules) {
                     String[] r = rule.substring(0, 5).split("\\B");
                     match = true;
                     nextChar = rule.substring(rule.length() - 1);
                     for (int j = -2; j < 3; j++) {
 
-                        String current = "";
+                        char current = '.';
                         if (i + j < 0) {
-                            current = ".";
-                        } else if (i + j >= s.length) {
-                            current = ".";
+                            current = '.';
+                        } else if (i + j >= state.length()) {
+                            current = '.';
                         } else {
-                            current = s[i + j];
+                            current = state.charAt(i + j);
                         }
 
-                        String matcher = r[j + 2];
+                        char matcher = rule.charAt(j + 2);
 
-                        if (!current.equals(matcher)) {
+                        if (current != matcher) {
                             match = false;
                             break;
                         }
                     }
-                    if(match) {
+                    if (match) {
                         break;
                     }
 
                 }
                 if (match) {
 
-                    next[i] = nextChar;
+                    next.append(nextChar);
                 } else {
-                    if (i >= 0)
-                        next[i] = ".";
+
+                    next.append(".");
+
                 }
             }
         }
 
-        int sum = 0;
-        for(int i = 0; i < next.length;  i++) {
-            if ("#".equals(next[i])) {
-                sum += i -20;
+        long sum = 0;
+        String result = next.toString();
+        System.out.print(result);
+        for (int i = 0; i < result.length(); i++) {
+            if ('#' == result.charAt(i)) {
+                sum += i - x;
             }
         }
         return sum;
