@@ -60,7 +60,7 @@ public class Day12 {
                 }
             }
             x--;
-            x--;
+            x--; //since 1 extra "." is added in the beginning of each row
 
 
         }
@@ -75,15 +75,4 @@ public class Day12 {
         }
         return sum;
     }
-
-    private int getHundred(int i) {
-        String s = "" + i;
-        if (s.length() < 3) {
-            return 0;
-        } else {
-            return Integer.valueOf(s.substring(s.length() - 3, s.length() - 2));
-        }
-    }
-
- //4300000016088 too high
 }
