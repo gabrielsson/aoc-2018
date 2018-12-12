@@ -3,6 +3,8 @@ package com.gabrielsson.adventofcode;//package com.gabrielsson.adventofcode;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 public class Day12Test {
 
     @Test
@@ -10,7 +12,7 @@ public class Day12Test {
         PuzzleInput input = new PuzzleInput("day12example.txt");
 
         Day12 d = new Day12();
-        Assert.assertEquals(325, d.part1(input.getListOfRows(), "#..#.#..##......###...###"));
+        Assert.assertEquals(325, d.part1(input.getListOfRows(), "#..#.#..##......###...###" ));
 
     }
 
@@ -19,7 +21,7 @@ public class Day12Test {
         PuzzleInput input = new PuzzleInput("day12.txt");
 
         Day12 d = new Day12();
-        Assert.assertEquals(3793, d.part1(input.getListOfRows(), "##..#..##....#..#..#..##.#.###.######..#..###.#.#..##.###.#.##..###..#.#..#.##.##..###.#.#...#.##.."));
+        Assert.assertEquals(BigInteger.valueOf(4300000002414l), d.part1(input.getListOfRows(), "##..#..##....#..#..#..##.#.###.######..#..###.#.#..##.###.#.##..###..#.#..#.##.##..###.#.#...#.##.."));
 
     }
 }

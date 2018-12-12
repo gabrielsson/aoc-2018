@@ -1,5 +1,6 @@
 package com.gabrielsson.adventofcode;//package com.gabrielsson.adventofcode;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,10 +12,13 @@ public class Day12 {
         //Adding 20 .....
 
         StringBuffer next = new StringBuffer(state);
-        int x = 0;
+        long x = 50000000000l;
+
         boolean converging = false;
-        for (; x < 20; x++) {
+        while (!next.substring(2).equals(state)) {
+
             state = next.toString();
+            System.out.println(state);
             next = new StringBuffer();
             for (int i = -1; i < state.length() + 1; i++) {
                 boolean match = false;
@@ -55,14 +59,18 @@ public class Day12 {
 
                 }
             }
+            x--;
+            x--;
+
+
         }
 
-        long sum = 0;
+        BigInteger sum = BigInteger.valueOf(0);
         String result = next.toString();
         System.out.print(result);
         for (int i = 0; i < result.length(); i++) {
             if ('#' == result.charAt(i)) {
-                sum += i - x;
+                sum = sum.add(BigInteger.valueOf(i + x));
             }
         }
         return sum;
@@ -77,5 +85,5 @@ public class Day12 {
         }
     }
 
-
+ //4300000016088 too high
 }
