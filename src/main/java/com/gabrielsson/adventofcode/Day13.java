@@ -29,45 +29,50 @@ public class Day13 {
 
         }
 
-       int byxis = 2000000;
         while(true) {
             carts.sort(this::sort);
-            Set<Cart> reduced = new HashSet<>();
-            for(int i =0; i <carts.size(); i++) {
-                carts.get(i).move(getField(carts.get(i).pos.x, carts.get(i).pos.y, playArea));
+            Set<String> reduced = new HashSet<>();
 
-                reduced = checkCollition(carts);
+            reduced = checkCollition(carts, playArea);
 
+            Set<String> finalReduced = reduced;
+            List<Cart> removecarts = carts.stream().filter(cart -> finalReduced.contains(cart.id)).collect(Collectors.toList());
+
+            carts.removeAll(removecarts);
+
+            if(carts.size() == 1) {
+                stop(carts.get(0));
+            }
+            for(Cart cart: carts) {
+                cart.move(getField(cart.pos.x, cart.pos.y, playArea));
 
             }
-            carts.removeAll(reduced);
 
 
             if(carts.size() == 1) {
                 stop(carts.get(0));
             }
-
-
-
-
-            if(byxis < 0) break;
-            byxis--;
-
-
         }
 
 
-        return "7,3";
     }
 
-    private Set<Cart> checkCollition(List<Cart> carts) {
+    private Set<String> checkCollition(List<Cart> carts, List<String> playArea) {
 
-        final Set<Cart> setToReturn = new HashSet<>();
+        List<Cart> future = new ArrayList<>(carts);
+
+        for(Cart cart: future) {
+            cart.move(getField(cart.pos.x, cart.pos.y, playArea));
+        }
+
+
+
+        final Set<String> setToReturn = new HashSet<>();
         final Set<Cart> set1 = new HashSet<>();
 
-        for (Cart cart : carts) {
+        for (Cart cart : future) {
             if (!set1.add(cart)) {
-                setToReturn.add(cart);
+                setToReturn.add(cart.id);
             }
         }
 
