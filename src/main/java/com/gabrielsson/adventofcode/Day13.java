@@ -33,21 +33,21 @@ public class Day13 {
             carts.sort(this::sort);
             Set<String> reduced = new HashSet<>();
 
-            reduced = checkCollition(carts, playArea);
+
+
+
+            for(Cart cart: carts) {
+                if(!reduced.contains(cart.id)) {
+                    cart.move(getField(cart.pos.x, cart.pos.y, playArea));
+                }
+                reduced.addAll(checkCollition(carts, playArea));
+
+            }
 
             Set<String> finalReduced = reduced;
             List<Cart> removecarts = carts.stream().filter(cart -> finalReduced.contains(cart.id)).collect(Collectors.toList());
 
             carts.removeAll(removecarts);
-
-            if(carts.size() == 1) {
-                stop(carts.get(0));
-            }
-            for(Cart cart: carts) {
-                cart.move(getField(cart.pos.x, cart.pos.y, playArea));
-
-            }
-
 
             if(carts.size() == 1) {
                 stop(carts.get(0));
@@ -59,18 +59,12 @@ public class Day13 {
 
     private Set<String> checkCollition(List<Cart> carts, List<String> playArea) {
 
-        List<Cart> future = new ArrayList<>(carts);
-
-        for(Cart cart: future) {
-            cart.move(getField(cart.pos.x, cart.pos.y, playArea));
-        }
-
 
 
         final Set<String> setToReturn = new HashSet<>();
         final Set<Cart> set1 = new HashSet<>();
 
-        for (Cart cart : future) {
+        for (Cart cart : carts) {
             if (!set1.add(cart)) {
                 setToReturn.add(cart.id);
             }
