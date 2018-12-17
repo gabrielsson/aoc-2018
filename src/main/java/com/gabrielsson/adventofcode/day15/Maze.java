@@ -25,9 +25,7 @@ public class Maze {
     }
 
     public Asset[][] getMaze() {
-        return Arrays.stream(maze)
-                .map(Asset[]::clone)
-                .toArray(Asset[][]::new);
+        return maze;
     }
 
     private void initializeMaze(String[] lines) {
@@ -113,7 +111,8 @@ public class Maze {
     }
 
     public void printPath(List<Coordinate> path) {
-        Asset[][] tempMaze = getMaze();
+        Asset[][] tempMaze =  Arrays.copyOf(maze, maze.length);
+
         for (Coordinate coordinate : path) {
             if (isStart(coordinate.getX(), coordinate.getY()) || isExit(coordinate.getX(), coordinate.getY())) {
                 continue;
@@ -130,11 +129,11 @@ public class Maze {
         StringBuilder result = new StringBuilder(getWidth() * (getHeight() + 1));
         for (int row = 0; row < getHeight(); row++) {
             for (int col = 0; col < getWidth(); col++) {
-                if(start.getX() == col && start.getY() == row) {
+         /*       if(start.getX() == col && start.getY() == row) {
                     result.append('S');
                 } else if(end.getX() == col && end.getY() == row) {
                     result.append('X');
-                } else if (maze[row][col].gameClass == ROAD) {
+                } else */if (maze[row][col].gameClass == ROAD) {
                     result.append(' ');
                 } else if (maze[row][col].gameClass == WALL) {
                     result.append('#');
@@ -154,9 +153,24 @@ public class Maze {
     public void reset() {
         for (int i = 0; i < visited.length; i++) {
             Arrays.fill(visited[i], false);
-            Arrays.stream(maze).flatMap(as -> Arrays.stream(as)).filter(a -> a.gameClass == PATH).forEach(a -> a.gameClass = ROAD);
+            Arrays.stream(maze).flatMap(as -> Arrays.stream(as)).filter(a -> a.gameClass == PATH).forEach(a -> {
+                a.gameClass = ROAD;
+            });
         }
     }
 
 
+    public void move(int x, int y, int x1, int y1) {
+        Asset player = maze[y][x];
+        maze[y][x] = new Asset(ROAD, new Coordinate(x, y));
+        player.coordinate = new Coordinate(x1, y1);
+        maze[y1][x1] = player;
+    }
+
+    public void hitAssetAt(int x, int y, int attack) {
+        maze[y][x].hp -= attack;
+        if(maze[y][x].hp < 1) {
+            maze[y][x] = new Asset(ROAD, new Coordinate(x, y));
+        }
+    }
 }
