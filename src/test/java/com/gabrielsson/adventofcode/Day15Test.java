@@ -28,7 +28,15 @@ public class Day15Test {
         PuzzleInput input = new PuzzleInput("day15own.txt");
 
         Day15 d = new Day15();
-        Assert.assertEquals(36334, d.part1(input.getListOfRows()));
+        Assert.assertEquals(18740, d.part1(input.getListOfRows()));
+
+    }
+    @Test
+    public void part139514() {
+        PuzzleInput input = new PuzzleInput("day15example39514.txt");
+
+        Day15 d = new Day15();
+        Assert.assertEquals(39514, d.part1(input.getListOfRows()));
 
     }
 

@@ -16,22 +16,24 @@ public class Day15 {
         int turn = 0;
         boolean stillOpponents = true;
         while (stillOpponents) {
-            turn++;
             List<Asset> assets = Arrays.stream(maze.getMaze())
                     .flatMap(a -> Arrays.stream(a))
                     .filter(s -> s.gameClass == Constants.ELF || s.gameClass == Constants.GOBLIN)
                     .sorted(this::assetSort)
                     .collect(Collectors.toList());
-            for (Asset a : assets) {
-                if (maze.getMaze()[a.coordinate.y][a.coordinate.x].gameClass != a.gameClass) continue;
+            int i = 1;
+            boolean gameEnd = false;
+
+            for (Asset currentAsset: assets) {
+                if (maze.getMaze()[currentAsset.coordinate.y][currentAsset.coordinate.x].gameClass != currentAsset.gameClass) continue;
                 Optional<Asset> adjecentOpponent = assets.stream()
-                        .filter(opponent -> opponent.gameClass != a.gameClass)
-                        .filter(opponent -> isAdjecent(a, opponent))
+                        .filter(opponent -> opponent.gameClass != currentAsset.gameClass)
+                        .filter(opponent -> isAdjecent(currentAsset, opponent))
                         .sorted(this::combatSort).findFirst();
 
                 if (!adjecentOpponent.isPresent()) {
 
-                    Pair<Asset, List<Coordinate>> path = getPathToClosestOpponent(a, maze, assets);
+                    Pair<Asset, List<Coordinate>> path = getPathToClosestOpponent(currentAsset, maze, assets);
                     int minSize = Integer.MAX_VALUE;
                     Pair<Asset, List<Coordinate>> smallest = null;
 
@@ -44,33 +46,45 @@ public class Day15 {
                         List<Coordinate> list = smallest.getValue();
 
                         Coordinate newCoord = smallest.getValue().get(smallest.getValue().size() - 2);
-                        maze.move(a.coordinate.x, a.coordinate.y, newCoord.x, newCoord.y);
+                        maze.move(currentAsset.coordinate.x, currentAsset.coordinate.y, newCoord.x, newCoord.y);
                         //printMaze(maze, smallest, a);
 
                     }
                 }
 
+                List<Asset> adjecentOpponents = assets.stream()
+                        .filter(opponent -> opponent.gameClass != currentAsset.gameClass)
+                        .filter(opponent -> isAdjecent(currentAsset, opponent))
+                        .collect(Collectors.toList());
+                if(adjecentOpponent.isPresent()) {
+                    if(adjecentOpponents.size()>0) {
+
+                        Asset opponent = adjecentOpponents.stream()
+                                .sorted(this::combatSort)
+                                .findFirst().get();
+
+                        int hp = maze.hitAssetAt(opponent.coordinate.x, opponent.coordinate.y, currentAsset.attack);
+                        System.out.print(hp +", ");
+                        long count = Arrays.stream(maze.getMaze())
+                                .flatMap(a -> Arrays.stream(a))
+                                .filter(s -> s.gameClass == opponent.gameClass)
+                                .count();
+                        if(hp < 0 && count == 0 && i < assets.size()) {
+
+                            System.out.println("**** KILL WITHIN ROUND ****");
+                            gameEnd = true;
+                            break;
+                        }
+                    }
+                }
+                i++;
             }
 
+            if(!gameEnd) {
+                turn++;
+            }
 
-            assets.stream().sorted(this::assetSort).forEach(a -> {
-                List<Asset> adjecentOpponents = assets.stream()
-                        .filter(opponent -> opponent.gameClass != a.gameClass)
-                        .filter(opponent -> isAdjecent(a, opponent))
-                        .collect(Collectors.toList());
-                if(adjecentOpponents.size()>0) {
-
-                    Asset adjecentOpponent = adjecentOpponents.stream()
-                            .sorted(this::combatSort)
-                            .findFirst().get();
-
-                    maze.hitAssetAt(adjecentOpponent.coordinate.x, adjecentOpponent.coordinate.y, a.attack);
-                }
-
-            });
-
-
-            System.out.println("After " + turn + " rounds:" + assets.stream().sorted(this::assetSort).map(a -> a.gameClass + ":" + a.hp).collect(Collectors.joining(",")));
+            System.out.println("After " + turn + " rounds:" + assets.stream().filter(a -> a.hp > 0).sorted(this::assetSort).map(a -> a.gameClass + ":" + a.hp).collect(Collectors.joining(",")));
 
             System.out.println(maze.toString(maze.getMaze()));
 
@@ -129,7 +143,7 @@ public class Day15 {
 
     private int assetSort(Asset asset, Asset asset1) {
         if (asset.coordinate.y == asset1.coordinate.y) {
-            return Integer.compare(asset1.coordinate.x, asset.coordinate.x);
+            return Integer.compare(asset.coordinate.x, asset1.coordinate.x);
         } else {
             return Integer.compare(asset.coordinate.y, asset1.coordinate.y);
         }
@@ -151,6 +165,9 @@ public class Day15 {
     }
 
     private int compare(Pair<Asset, List<Coordinate>> pair, Pair<Asset, List<Coordinate>> pair1) {
+        if(pair.getValue().size() == pair1.getValue().size()) {
+            return assetSort(pair.getKey(), pair1.getKey());
+        }
         return Integer.compare(pair.getValue().size(), pair1.getValue().size());
     }
 

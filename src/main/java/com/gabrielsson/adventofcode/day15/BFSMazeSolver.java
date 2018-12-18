@@ -4,7 +4,7 @@ package com.gabrielsson.adventofcode.day15;
 import java.util.*;
 
 public class BFSMazeSolver {
-    private static final int[][] DIRECTIONS = {  { 1, 0 },{ -1, 0 },{ 0, 1 },{ 0, -1 } };
+    private static final int[][] DIRECTIONS = {  { 0, -1 },{ -1, 0 },{ 0, 1 },{ 1, 0 } };
 
     public List<Coordinate> solve(Maze maze, Asset player, Asset end) {
         LinkedList<Coordinate> nextToVisit = new LinkedList<>();

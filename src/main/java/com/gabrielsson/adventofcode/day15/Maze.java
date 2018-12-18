@@ -167,10 +167,12 @@ public class Maze {
         maze[y1][x1] = player;
     }
 
-    public void hitAssetAt(int x, int y, int attack) {
-        maze[y][x].hp -= attack;
+    public int hitAssetAt(int x, int y, int attack) {
+        int value = maze[y][x].hp -= attack;
         if(maze[y][x].hp < 1) {
             maze[y][x] = new Asset(ROAD, new Coordinate(x, y));
         }
+
+        return value;
     }
 }
