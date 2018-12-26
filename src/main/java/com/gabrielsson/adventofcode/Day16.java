@@ -1,3 +1,4 @@
+/*
 package com.gabrielsson.adventofcode;
 
 import com.gabrielsson.adventofcode.day16.OP;
@@ -49,7 +50,8 @@ public class Day16 {
     List<OP> ops = new ArrayList<>();
 
     {
-        /*
+        */
+/*
         eqrr=[14]
  borr=[12]
  addi=[4]
@@ -66,7 +68,8 @@ public class Day16 {
  addr=[15]
  gtrr=[7]
  mulr=[6]
-         */
+         *//*
+
         ops.add(new OPRR("15", add));
         ops.add(new OPRI("4", add));
         ops.add(new OPRR("6", mul));
@@ -153,3 +156,4 @@ public class Day16 {
     }
 
 }
+*/

@@ -1,15 +1,17 @@
 package com.gabrielsson.adventofcode.day16;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class OPIR implements OP {
 
-    private final BiFunction<Integer, Integer, Integer> function;
+    private final BiFunction<Long, Long, Long> function;
     private final String name;
 
-    public OPIR(String name, BiFunction<Integer, Integer, Integer> function) {
+    public OPIR(String name, BiFunction<Long, Long, Long> function) {
 
         this.function = function;
 
@@ -22,25 +24,18 @@ public class OPIR implements OP {
         return name;
     }
 
-    public List<Integer> doOperation(String state, String opcode) {
-        List<Integer> states = new ArrayList<>(4);
-        for (String s : state.split(" ")) {
-            states.add(Integer.valueOf(s));
-        }
+    public List<Long> doOperation(List<Long> state, String opcode) {
+        List<String> opcodes = Arrays.stream(opcode.split(" ")).collect(Collectors.toList());
 
 
-        List<Integer> opcodes = new ArrayList<>(4);
-        for (String s : opcode.split(" ")) {
-            opcodes.add(Integer.valueOf(s));
-        }
+        long valuea = Long.valueOf(opcodes.get(1));
+        long regb = Long.valueOf(opcodes.get(2));
+        long resultReg = Long.valueOf(opcodes.get(3));
 
-        int valuea = opcodes.get(1);
-        int regb = opcodes.get(2);
-        int resultReg = opcodes.get(3);
+        if(regb >= state.size()) regb = 0;
+        state.set((int)resultReg, function.apply(valuea, state.get((int)regb)));
 
-        states.set(resultReg, function.apply(valuea, states.get(regb)));
-
-        return states;
+        return state;
     }
 
 

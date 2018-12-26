@@ -5,5 +5,5 @@ import java.util.List;
 public interface OP {
 
     public String getName();
-    public List<Integer> doOperation(String state, String opcode);
+    public List<Long> doOperation(List<Long> state, String opcode);
 }
